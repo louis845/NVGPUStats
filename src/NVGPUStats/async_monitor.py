@@ -73,3 +73,22 @@ class AsyncMonitor:
             gen.send(False)
         except StopIteration:
             pass
+
+def convert_to_dict_list(results: list[tuple[float, dict[int, dict[str, Any]]]]) -> dict[str, Any]:
+    """
+    Converts the results to a list of dictionaries.
+    """
+    dict_results = {
+        "timestamps": [],
+        "data": {}
+    }
+    for timestamp, data in results:
+        dict_results["timestamps"].append(timestamp)
+        for device, device_data in data.items():
+            if device not in dict_results["data"]:
+                dict_results["data"][device] = {}
+            for key in device_data:
+                if key not in dict_results["data"][device]:
+                    dict_results["data"][device][key] = []
+                dict_results["data"][device][key].append(device_data[key])
+    return dict_results

@@ -67,3 +67,9 @@ information_details: dict[str, dict[str, Any]] = {
 }
 
 assert set(information_list) == set(information_details.keys()), "Invalid!"
+
+def is_static(information: str) -> bool:
+    """
+    Returns whether the specified information is static.
+    """
+    return information_details[information]["is_static"]
