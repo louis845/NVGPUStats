@@ -47,10 +47,18 @@ def active_monitor(
 
     collected_data: list[tuple[float, dict[int, dict[str, Any]]]] = []
     start_time = time.time()
-    while (time.time() - start_time) < total_time:
-        time.sleep(period)
+    prev_time = None
+    while True:
+        cur_time = time.time()
+        if (cur_time - start_time) > total_time:
+            break
+        if prev_time is not None:
+            sleep_time = period - (cur_time - prev_time)
+            if sleep_time > 0:
+                time.sleep(sleep_time)
         timestamp, data = gen.send(True)
         collected_data.append((timestamp, data))
+        prev_time = time.time()
     # Stop the generator
     try:
         gen.send(False)

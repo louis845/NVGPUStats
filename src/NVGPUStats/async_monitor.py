@@ -64,10 +64,16 @@ class AsyncMonitor:
         """
         gen = monitor(self.devices, self.information)
         next(gen)  # Initialize the generator
+        prev_time = None
         while not self._stop_event.is_set():
+            cur_time = time.time()
+            if prev_time is not None:
+                sleep_time = self.period - (cur_time - prev_time)
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
             timestamp, data = gen.send(True)
             self._results.append((timestamp, data))
-            time.sleep(self.period)
+            prev_time = cur_time
         # Stop the generator
         try:
             gen.send(False)
