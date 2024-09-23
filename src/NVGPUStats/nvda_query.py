@@ -43,11 +43,12 @@ def get_static_info(device: int) -> dict[str, Any]:
     """
     global _cached_static_info
     static_information_list = [info for info in information_list if information_details[info]["is_static"]]
+    static_information_list_mapped = [_QUERY_MAPPING[info] for info in static_information_list]
 
     with _static_info_lock:
         if device not in _cached_static_info:
             try:
-                cmd = ["nvidia-smi", f"--query-gpu={','.join(static_information_list)}", f"--id={device}", "--format=csv,noheader,nounits"]
+                cmd = ["nvidia-smi", f"--query-gpu={','.join(static_information_list_mapped)}", f"--id={device}", "--format=csv,noheader,nounits"]
                 output = subprocess.check_output(
                     cmd,
                     stderr=subprocess.STDOUT,
