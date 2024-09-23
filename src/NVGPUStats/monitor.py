@@ -56,9 +56,9 @@ def active_monitor(
             sleep_time = period - (cur_time - prev_time)
             if sleep_time > 0:
                 time.sleep(sleep_time)
+        prev_time = time.time()
         timestamp, data = gen.send(True)
         collected_data.append((timestamp, data))
-        prev_time = time.time()
     # Stop the generator
     try:
         gen.send(False)

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='NVGPUStats',
-    version='0.4.0',
+    version='0.5.0',
     description='A Python interface for monitoring installed NVIDIA GPUs',
     author='Louis, Chau Yu Hei',
     author_email='louis321yh@gmail.com',

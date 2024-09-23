@@ -71,9 +71,9 @@ class AsyncMonitor:
                 sleep_time = self.period - (cur_time - prev_time)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
+            prev_time = time.time()
             timestamp, data = gen.send(True)
             self._results.append((timestamp, data))
-            prev_time = cur_time
         # Stop the generator
         try:
             gen.send(False)
